@@ -1,1 +1,14 @@
+# Installing firewall with status check either firewall installed or not
 #!/bin/bash
+
+echo "Installing firewall"
+sudo yum install -y firewalld
+firewall_check=$(echo $?)
+echo "$firewall_check"
+if [ $firewall_check = "0" ]
+        then
+        echo "Firewall installed successfully "
+else
+        echo "Firewall is not installed"
+
+fi
