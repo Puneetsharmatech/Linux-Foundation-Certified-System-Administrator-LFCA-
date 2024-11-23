@@ -1,7 +1,7 @@
 sudo yum install -y firewalld
 sudo systemctl start firewalld
 sudo systemctl enable firewalld
-sudo systemctl status firewalld
+sudo systemctl is-active firewalld
 
 
 sudo yum install -y mariadb-server
