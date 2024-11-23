@@ -5,7 +5,6 @@ sudo systemctl status firewalld
 
 
 sudo apt install -y mariadb-server
-sudo vi /etc/my.cnf
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
 
@@ -14,12 +13,14 @@ sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
 sudo firewall-cmd --reload
 
 
-$ mysql
-MariaDB > CREATE DATABASE app;
-MariaDB > CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'appuser';
-MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'appuser'@'localhost';
-MariaDB > FLUSH PRIVILEGES;
+cat > database-script.sql <<-EOF
+CREATE DATABASE app;
+CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'appuser';
+GRANT ALL PRIVILEGES ON *.* TO 'appuser'@'localhost';
+FLUSH PRIVILEGES;
+EOF
 
+sudo mysql < database-script.sq
 
 cat > db-load-script.sql <<-EOF
 USE app;
@@ -36,7 +37,7 @@ sudo mysql < db-load-script.sql
 
 
 
-sudo apt install -y httpd php php-mysqlnd
+sudo yum install -y httpd php php-mysqlnd
 sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
 sudo firewall-cmd --reload
 
