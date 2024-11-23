@@ -52,7 +52,7 @@ sudo systemctl enable httpd
 
 
 sudo yum install -y git
-sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+sudo git clone https://github.com/Puneetsharmatech/app-ecommerce.git /var/www/html/
 
 
 cat > /var/www/html/.env <<-EOF
