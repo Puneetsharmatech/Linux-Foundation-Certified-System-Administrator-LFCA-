@@ -13,7 +13,7 @@ sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
 sudo firewall-cmd --reload
 
 
-cat > database-script.sql <<-EOF
+sudo cat > database-script.sql <<-EOF
 CREATE DATABASE app;
 CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'appuser';
 GRANT ALL PRIVILEGES ON *.* TO 'appuser'@'localhost';
@@ -22,7 +22,7 @@ EOF
 
 sudo mysql < database-script.sql
 
-cat > db-load-script.sql <<-EOF
+sudo cat > db-load-script.sql <<-EOF
 USE app;
 CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
 
@@ -55,9 +55,18 @@ sudo yum install -y git
 sudo git clone https://github.com/Puneetsharmatech/app-ecommerce.git /var/www/html/
 
 
-cat > /var/www/html/.env <<-EOF
+sudo cat > /var/www/html/.env <<-EOF
 DB_HOST=localhost
 DB_USER=appuser
 DB_PASSWORD=appuser
 DB_NAME=app
 EOF
+
+
+
+curl http://localhost
+
+
+
+
+
