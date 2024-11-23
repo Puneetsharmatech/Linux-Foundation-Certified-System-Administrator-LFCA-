@@ -20,7 +20,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'appuser'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-sudo mysql < database-script.sq
+sudo mysql < database-script.sql
 
 cat > db-load-script.sql <<-EOF
 USE app;
