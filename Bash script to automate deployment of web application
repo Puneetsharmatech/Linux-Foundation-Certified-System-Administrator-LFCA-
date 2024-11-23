@@ -1,26 +1,62 @@
-#!/bin/bash
+sudo apt install -y firewalld
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
 
-echo "Checking firewall is already installed or not"
-firewall_status_check=$(firewall-cmd --state)
-Firewall_status_exitcode=$(echo $?)
-if [ $firewall_status_check="running"  ]
-then
-        echo "Firewall is already installed and running"
 
-#elif [ $firewall_status_exitcode!="0" ]
-#then           
-#       echo "firewall is not installed"
-else
-        echo "install firewall"
+sudo apt install -y mariadb-server
+sudo vi /etc/my.cnf
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
 
-fi
-#sudo yum install -y firewalld
-#firewall_check=$(echo $?)
-#echo "$firewall_check"
-#if [ $firewall_check = "0" ]
-#       then
-#       echo "Firewall installed successfully "
-#else
-#       echo "Firewall is not installed"
 
-#fi
+sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
+sudo firewall-cmd --reload
+
+
+$ mysql
+MariaDB > CREATE DATABASE app;
+MariaDB > CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'appuser';
+MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'appuser'@'localhost';
+MariaDB > FLUSH PRIVILEGES;
+
+
+cat > db-load-script.sql <<-EOF
+USE app;
+CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
+
+INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
+
+EOF
+
+
+
+
+sudo mysql < db-load-script.sql
+
+
+
+sudo apt install -y httpd php php-mysqlnd
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --reload
+
+
+
+sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
+
+
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+
+
+sudo apt install -y git
+sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+
+
+cat > /var/www/html/.env <<-EOF
+DB_HOST=localhost
+DB_USER=appuser
+DB_PASSWORD=appuser
+DB_NAME=app
+EOF
